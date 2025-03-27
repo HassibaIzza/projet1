@@ -27,17 +27,14 @@ class AuthenticatedSessionController extends Controller
     $credentials = $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required'],
-        'role'=> ['required'],
+        
+        
     ]);
 
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
 
-        if (auth()->user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } else {
-            return redirect()->route('agent.dashboard');
-        }
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     return back()->withErrors([

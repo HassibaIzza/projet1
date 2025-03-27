@@ -26,7 +26,7 @@
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
-        <!-- ROLE  -->
+        <!-- ROLE  
         <div>
             <x-input-label for="role" :value="__('Role')" />
             <select id="role" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="role" required>
@@ -35,7 +35,7 @@
                 <option value="{{ \App\Models\User::ROLE_AGENT }}" @if(old('role') == \App\Models\User::ROLE_AGENT) selected @endif>{{ __('Agent') }}</option>
             </select>
             <x-input-error :messages="$errors->get('role')" class="mt-2" />
-        </div>
+        </div>-->
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
