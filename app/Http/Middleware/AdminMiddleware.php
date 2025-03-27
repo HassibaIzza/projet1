@@ -15,8 +15,8 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user() && auth()->user()->role === 'admin') {
-            return $next($request);
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
+            abort(403, 'Accès non autorisé.');
         }
         return redirect('/agent/dashboard')->with('error', "Accès refusé.");
     }

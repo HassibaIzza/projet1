@@ -22,10 +22,15 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+    public function store(Request $request): RedirectResponse
+{
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+        'role'=> ['required'],
+    ]);
 
+    if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
 
         if (auth()->user()->role === 'admin') {
@@ -34,6 +39,12 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('agent.dashboard');
         }
     }
+
+    return back()->withErrors([
+        'email' => 'Les informations ne correspondent pas.',
+    ]);
+}
+
 
     /**
      * Destroy an authenticated session.
