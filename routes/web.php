@@ -13,6 +13,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -22,9 +23,17 @@ Route::middleware('auth')->group(function () {
 
 // dashbord redirection Admin/Agent 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('admin')->name('admin.dashboard');
-    Route::get('/agent/dashboard', [AgentController::class, 'index'])->middleware('agent')->name('agent.dashboard');
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('auth')->name('admin.dashboard');
+    Route::get('/agent/dashboard', [AgentController::class, 'index'])->middleware('auth')->name('agent.dashboard');
 });
 
+Route::get('/redirect', function () {
+    if (auth()->user()->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    } elseif (auth()->user()->role === 'agent') {
+        return redirect()->route('agent.dashboard');
+    }
+    return abort(403);
+})->middleware(['auth']);
 
 require __DIR__.'/auth.php';
