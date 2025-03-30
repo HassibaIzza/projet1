@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+
 
 class AdminMiddleware
 {
@@ -15,9 +17,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            abort(403, 'Accès non autorisé.');
+        if (auth()->check() && auth()->user()->role === 'admin') {
+            return $next($request);
         }
-        return redirect('/agent/dashboard')->with('error', "Accès refusé.");
+
+        return redirect()->route('/')->with('error', 'Accès refusé.');
     }
 }

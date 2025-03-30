@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+        'agent' => [
+            'driver' => 'session',
+            'provider' => 'agents',
+        ],
     ],
 
     /*
@@ -63,6 +71,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+        'admins' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\User::class,
+        'filter' => fn ($query) => $query->where('role', 'admin'),
+        ],
+        'agents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+            'filter' => fn ($query) => $query->where('role', 'agent'),
         ],
 
         // 'users' => [

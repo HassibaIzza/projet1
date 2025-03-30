@@ -15,10 +15,10 @@ class AgentMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || (!auth()->user()->isAdmin() && !auth()->user()->isAgent())) {
-            abort(403, 'Accès non autorisé.');
+        if (auth()->check() && auth()->user()->role === 'agent') {
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect()->route('dashboard')->with('error', 'Accès refusé.');
     }
 }

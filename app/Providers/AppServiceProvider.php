@@ -15,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
+    public const HOME = '/redirect';
+
     /**
      * Bootstrap any application services.
      */

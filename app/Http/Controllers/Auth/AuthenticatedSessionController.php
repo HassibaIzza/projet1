@@ -33,13 +33,16 @@ class AuthenticatedSessionController extends Controller
 
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
-        Auth::login($user);
-
-        if (auth()->user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        } else {
-            return redirect()->route('agent.dashboard');
-        }
+        $user = Auth::user();
+    
+        // Définir la redirection dynamique
+        $redirectTo = match ($user->role) {
+            'admin' => route('admin.dashboard'),
+            'agent' => route('agent.dashboard'),
+            default => route('/') // Redirection par défaut
+        };
+    
+        return redirect()->intended($redirectTo);
     }
 
     return back()->withErrors([
