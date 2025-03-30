@@ -37,3 +37,4 @@ Route::get('/redirect', function () {
 })->middleware(['auth']);
 
 require __DIR__.'/auth.php';
+require __DIR__.'/langAr.php';
